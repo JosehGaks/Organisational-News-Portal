@@ -30,31 +30,6 @@ public class NewsTest {
         assertNotEquals("Great service", testNews.getContent());
     }
 
-    @Test
-    public void getWrittenBy() {
-        News testNews = setupNews();
-        assertEquals("Kim", testNews.getWrittenBy());
-    }
-
-    @Test
-    public void setWrittenBy() {
-        News testNews = setupNews();
-        testNews.setWrittenBy("Mike");
-        assertNotEquals("Kim", testNews.getWrittenBy());
-    }
-
-    @Test
-    public void getRating() {
-        News testNews = setupNews();
-        assertEquals(4, testNews.getRating());
-    }
-
-    @Test
-    public void setRating() {
-        News testNews = setupNews();
-        testNews.setRating(1);
-        assertNotEquals(4, testNews.getRating());
-    }
 
     @Test
     public void getDepartmentId() {

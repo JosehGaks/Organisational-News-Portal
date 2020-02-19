@@ -1,7 +1,7 @@
 SET MODE PostgreSQL;
 
-CREATE DATABASE jadle;
-\c jadle;
+CREATE DATABASE news;
+\c news;
 
 CREATE TABLE departments (
  id SERIAL PRIMARY KEY,
@@ -17,11 +17,8 @@ CREATE TABLE users (
 
 CREATE TABLE news (
  id SERIAL PRIMARY KEY,
- writtenby VARCHAR,
- rating VARCHAR,
  content VARCHAR,
- departmentid INTEGER,
- createdat BIGINT
+ departmentid INTEGER
 );
 
 CREATE TABLE departments_users (

@@ -1,6 +1,10 @@
 package dao;
 
+import models.Department;
 import models.User;
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
+import org.sql2o.Sql2oException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,11 +63,11 @@ public class Sql2oUserDao implements UserDao{
     }
 
     @Override
-    public void addUserToDepartment(User user, Department department){
-        String sql = "INSERT INTO departments_users (departmentid, userid) VALUES (:departmentId, :userId)";
+    public void addUserToDepartment(User user, Department restaurant){
+        String sql = "INSERT INTO departments_users (restaurantid, userid) VALUES (:restaurantId, :userId)";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
-                    .addParameter("departmentId", department.getId())
+                    .addParameter("restaurantId", restaurant.getId())
                     .addParameter("userId", user.getId())
                     .executeUpdate();
         } catch (Sql2oException ex){
@@ -74,17 +78,17 @@ public class Sql2oUserDao implements UserDao{
     @Override
     public List<Department> getAllDepartmentsForAUser(int userId) {
         List<Department> departments = new ArrayList();
-        String joinQuery = "SELECT departmentid FROM departments_users WHERE userid = :userId";
+        String joinQuery = "SELECT restaurantid FROM departments_users WHERE userid = :userId";
 
         try (Connection con = sql2o.open()) {
             List<Integer> allDepartmentIds = con.createQuery(joinQuery)
                     .addParameter("userId", userId)
                     .executeAndFetch(Integer.class); //what is happening in the lines above?
-            for (Integer departmentId : allDepartmentIds){
-                String departmentQuery = "SELECT * FROM departments WHERE id = :departmentId";
+            for (Integer restaurantId : allDepartmentIds){
+                String restaurantQuery = "SELECT * FROM departments WHERE id = :restaurantId";
                 departments.add(
-                        con.createQuery(departmentQuery)
-                                .addParameter("departmentId", departmentId)
+                        con.createQuery(restaurantQuery)
+                                .addParameter("restaurantId", restaurantId)
                                 .executeAndFetchFirst(Department.class));
             } //why are we doing a second sql query - set?
         } catch (Sql2oException ex){
@@ -101,4 +105,5 @@ public class Sql2oUserDao implements UserDao{
                     .executeAndFetchFirst(User.class);
         }
     }
+
 }

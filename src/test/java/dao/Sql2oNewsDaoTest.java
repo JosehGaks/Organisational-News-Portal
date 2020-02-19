@@ -1,7 +1,14 @@
 package dao;
+
 import models.Department;
 import models.News;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -13,7 +20,7 @@ public class Sql2oNewsDaoTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        String connectionString = "jdbc:postgresql://localhost:5432/jadle_test"; //connect to postgres test database
+        String connectionString = "jdbc:postgresql://localhost:5432/jadle_test"; //
         Sql2o sql2o = new Sql2o(connectionString, "v", "1234"); //changed user and pass to null for mac users...Linux & windows need strings
         departmentDao = new Sql2oDepartmentDao(sql2o);
         userDao = new Sql2oUserDao(sql2o);

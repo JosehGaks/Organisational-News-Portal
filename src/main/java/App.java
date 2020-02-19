@@ -1,17 +1,26 @@
+import com.google.gson.Gson;
 import dao.Sql2oDepartmentDao;
+import dao.Sql2oNewsDao;
 import dao.Sql2oUserDao;
+import exceptions.ApiException;
 import models.Department;
+import models.News;
 import models.User;
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static spark.Spark.*;
+
+
 public class App {
     public static void main(String[] args) {
         Sql2oUserDao userDao;
         Sql2oDepartmentDao departmentDao;
-        Sql2oReviewDao newsDao;
+        Sql2oNewsDao newsDao;
         Connection conn;
         Gson gson = new Gson();
 
@@ -21,7 +30,7 @@ public class App {
 
         departmentDao = new Sql2oDepartmentDao(sql2o);
         userDao = new Sql2oUserDao(sql2o);
-        newsDao = new Sql2oReviewDao(sql2o);
+        newsDao = new Sql2oNewsDao(sql2o);
         conn = sql2o.open();
 
         //CREATE
@@ -75,9 +84,7 @@ public class App {
 
         post("/departments/:departmentId/news/new", "application/json", (req, res) -> {
             int departmentId = Integer.parseInt(req.params("departmentId"));
-            Review news = gson.fromJson(req.body(), Review.class);
-            news.setCreatedat(); //I am new!
-            news.setFormattedCreatedAt();
+            News news = gson.fromJson(req.body(), News.class);
             news.setDepartmentId(departmentId); //we need to set this separately because it comes from our route, not our JSON input.
             newsDao.add(news);
             res.status(201);
@@ -118,26 +125,26 @@ public class App {
             int departmentId = Integer.parseInt(req.params("id"));
 
             Department departmentToFind = departmentDao.findById(departmentId);
-            List<Review> allReviews;
+            List<News> allNewss;
 
             if (departmentToFind == null){
                 throw new ApiException(404, String.format("No department with the id: \"%s\" exists", req.params("id")));
             }
 
-            allReviews = newsDao.getAllReviewsByDepartment(departmentId);
+            allNewss = newsDao.getAllNewssByDepartment(departmentId);
 
-            return gson.toJson(allReviews);
+            return gson.toJson(allNewss);
         });
 
-        get("/departments/:id/sortedReviews", "application/json", (req, res) -> { //// TODO: 1/18/18 generalize this route so that it can be used to return either sorted newss or unsorted ones.
+        get("/departments/:id/sortedNewss", "application/json", (req, res) -> { //// TODO: 1/18/18 generalize this route so that it can be used to return either sorted newss or unsorted ones.
             int departmentId = Integer.parseInt(req.params("id"));
             Department departmentToFind = departmentDao.findById(departmentId);
-            List<Review> allReviews;
+            List<News> allNewss;
             if (departmentToFind == null){
                 throw new ApiException(404, String.format("No department with the id: \"%s\" exists", req.params("id")));
             }
-            allReviews = newsDao.getAllReviewsByDepartmentSortedNewestToOldest(departmentId);
-            return gson.toJson(allReviews);
+            allNewss = newsDao.getAllNewssByDepartmentSortedNewestToOldest(departmentId);
+            return gson.toJson(allNewss);
         });
 
         get("/users", "application/json", (req, res) -> {
