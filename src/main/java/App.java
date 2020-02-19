@@ -26,7 +26,7 @@ public class App {
 
         staticFileLocation("/public");
         String connectionString = "jdbc:postgresql://localhost:5432/news";
-        Sql2o sql2o = new Sql2o(connectionString, "v", "1234");
+        Sql2o sql2o = new Sql2o(connectionString, "", "");
 
         departmentDao = new Sql2oDepartmentDao(sql2o);
         userDao = new Sql2oUserDao(sql2o);
