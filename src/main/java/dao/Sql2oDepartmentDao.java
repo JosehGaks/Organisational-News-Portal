@@ -15,7 +15,7 @@ public class Sql2oDepartmentDao implements DepartmentDao{
 
     @Override
     public void add(Department department) {
-        String sql = "INSERT INTO departments (departmentName) VALUES (:departmentName)";
+        String sql = "INSERT INTO departments (departmentName,numberOfEmployees) VALUES (:departmentName,:numberOfEmployees)";
         try(Connection con = sql2o.open()){
             int id = (int) con.createQuery(sql, true)
                     .bind(department)
@@ -39,16 +39,11 @@ public class Sql2oDepartmentDao implements DepartmentDao{
                     .executeAndFetch(Department.class);
         }
     }
-
-//    @Override
-//    public List<Department> getAllRestaurantsForAFoodtype(int id) {
-//        return null;
-//    }
-
+    
     @Override
     public void deleteById(int id) {
         String sql = "DELETE from departments WHERE id=:id";
-        String deleteJoin = "DELETE from restaurants_departments WHERE departmentid = :departmentId";
+        String deleteJoin = "DELETE from departments_users WHERE departmentid = :departmentId";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("id", id)
@@ -72,40 +67,6 @@ public class Sql2oDepartmentDao implements DepartmentDao{
         }
     }
 
-//    @Override
-//    public void addDepartmentToRestaurant(Department department, Restaurant restaurant){
-//        String sql = "INSERT INTO restaurants_departments (restaurantid, departmentid) VALUES (:restaurantId, :departmentId)";
-//        try (Connection con = sql2o.open()) {
-//            con.createQuery(sql)
-//                    .addParameter("restaurantId", restaurant.getId())
-//                    .addParameter("departmentId", department.getId())
-//                    .executeUpdate();
-//        } catch (Sql2oException ex){
-//            System.out.println(ex);
-//        }
-//    }
-
-//    @Override
-//    public List<Restaurant> getAllRestaurantsForADepartment(int departmentId) {
-//        List<Restaurant> restaurants = new ArrayList();
-//        String joinQuery = "SELECT restaurantid FROM restaurants_departments WHERE departmentid = :departmentId";
-//
-//        try (Connection con = sql2o.open()) {
-//            List<Integer> allRestaurantIds = con.createQuery(joinQuery)
-//                    .addParameter("departmentId", departmentId)
-//                    .executeAndFetch(Integer.class); //what is happening in the lines above?
-//            for (Integer restaurantId : allRestaurantIds){
-//                String restaurantQuery = "SELECT * FROM restaurants WHERE id = :restaurantId";
-//                restaurants.add(
-//                        con.createQuery(restaurantQuery)
-//                                .addParameter("restaurantId", restaurantId)
-//                                .executeAndFetchFirst(Restaurant.class));
-//            } //why are we doing a second sql query - set?
-//        } catch (Sql2oException ex){
-//            System.out.println(ex);
-//        }
-//        return restaurants;
-//    }
 
     @Override
     public Department findById(int id) {
@@ -118,12 +79,38 @@ public class Sql2oDepartmentDao implements DepartmentDao{
 
     @Override
     public List<User> getAllUsersByDepartment(int departmentId) {
-        return null;
+
+        List<User> users = new ArrayList<User>();
+        String joinQuery = "SELECT userid FROM departments_users WHERE departmentid = :departmentId";
+
+        try (Connection con = sql2o.open()) {
+            List<Integer> allUsersIds = con.createQuery(joinQuery)
+                    .addParameter("departmentId", departmentId)
+                    .executeAndFetch(Integer.class);
+            for (Integer foodId : allUsersIds){
+                String userQuery = "SELECT * FROM users WHERE id = :userId";
+                users.add(
+                        con.createQuery(userQuery)
+                                .addParameter("userId", foodId)
+                                .executeAndFetchFirst(User.class));
+            }
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
+        return users;
     }
 
     @Override
-    public void update(int id, String departmentName, int numberOfEmployees) {
-
+    public void update(int id, String newDepartmentName, int newNumberOfEmployees) {
+        String sql = "UPDATE departments SET (departmentName, numberOfEmployees) = (:departmentName, :numberOfEmployees) WHERE id=:id"; //CHECK!!!
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("departmentName", newDepartmentName)
+                    .addParameter("numberOfEmployees", newNumberOfEmployees)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
     }
 
 }

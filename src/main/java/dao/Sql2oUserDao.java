@@ -64,7 +64,7 @@ public class Sql2oUserDao implements UserDao{
 
     @Override
     public void addUserToDepartment(User user, Department restaurant){
-        String sql = "INSERT INTO departments_users (restaurantid, userid) VALUES (:restaurantId, :userId)";
+        String sql = "INSERT INTO departments_users (departmentid, userid) VALUES (:departmentId, :userId)";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("restaurantId", restaurant.getId())
@@ -78,7 +78,7 @@ public class Sql2oUserDao implements UserDao{
     @Override
     public List<Department> getAllDepartmentsForAUser(int userId) {
         List<Department> departments = new ArrayList();
-        String joinQuery = "SELECT restaurantid FROM departments_users WHERE userid = :userId";
+        String joinQuery = "SELECT departmentid FROM departments_users WHERE userid = :userId";
 
         try (Connection con = sql2o.open()) {
             List<Integer> allDepartmentIds = con.createQuery(joinQuery)

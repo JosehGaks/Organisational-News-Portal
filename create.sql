@@ -9,6 +9,7 @@ CREATE TABLE departments (
  numberOfEmployees INTEGER
 );
 
+
 CREATE TABLE users (
  id SERIAL PRIMARY KEY,
  name VARCHAR,

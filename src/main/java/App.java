@@ -26,7 +26,7 @@ public class App {
 
         staticFileLocation("/public");
         String connectionString = "jdbc:postgresql://localhost:5432/news";
-        Sql2o sql2o = new Sql2o(connectionString, "", "");
+        Sql2o sql2o = new Sql2o(connectionString, "josephgakunga", "123");
 
         departmentDao = new Sql2oDepartmentDao(sql2o);
         userDao = new Sql2oUserDao(sql2o);
@@ -135,16 +135,6 @@ public class App {
             return gson.toJson(allNews);
         });
 
-        get("/departments/:id/sortedNews", "application/json", (req, res) -> { //// TODO: 1/18/18 generalize this route so that it can be used to return either sorted newss or unsorted ones.
-            int departmentId = Integer.parseInt(req.params("id"));
-            Department departmentToFind = departmentDao.findById(departmentId);
-            List<News> allNews;
-            if (departmentToFind == null){
-                throw new ApiException(404, String.format("No department with the id: \"%s\" exists", req.params("id")));
-            }
-            allNews = newsDao.getAllNewsByDepartmentSortedNewestToOldest(departmentId);
-            return gson.toJson(allNews);
-        });
 
         get("/users", "application/json", (req, res) -> {
             return gson.toJson(userDao.getAll());

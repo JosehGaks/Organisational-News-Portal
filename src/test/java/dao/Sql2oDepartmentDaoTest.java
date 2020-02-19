@@ -23,7 +23,7 @@ public class Sql2oDepartmentDaoTest {
     @BeforeClass                //
     public static void setUp() throws Exception {
         String connectionString = "jdbc:postgresql://localhost:5432/news_test";  //connect to postgres test database
-        Sql2o sql2o = new Sql2o(connectionString, "", "123"); //changed user and pass to null
+        Sql2o sql2o = new Sql2o(connectionString, "josephgakunga", "123"); //changed user and pass to null
         departmentDao = new Sql2oDepartmentDao(sql2o);
         userDao = new Sql2oUserDao(sql2o);
         newsDao = new Sql2oNewsDao(sql2o);
@@ -77,7 +77,7 @@ public class Sql2oDepartmentDaoTest {
         departmentDao.update(testDepartment.getId(), "a", 10);
         Department foundDepartment = departmentDao.findById(testDepartment.getId());
         assertEquals("a", foundDepartment.getDepartmentName());
-        assertEquals("b", foundDepartment.getNumberOfEmployees());
+        assertEquals(10, foundDepartment.getNumberOfEmployees());
 
     }
 
@@ -109,13 +109,13 @@ public class Sql2oDepartmentDaoTest {
         departmentDao.addDepartmentToUser(testDepartment,testUser);
         departmentDao.addDepartmentToUser(testDepartment,otherUser);
 
-        User[] users = {testUser, otherUser}; //oh hi what is this?
+        User[] users = {testUser, otherUser};
 
         assertEquals(Arrays.asList(users), departmentDao.getAllUsersByDepartment(testDepartment.getId()));
     }
 
     @Test
-    public void deleteingDepartmentAlsoUpdatesJoinTable() throws Exception {
+    public void deletingDepartmentAlsoUpdatesJoinTable() throws Exception {
         User testUser  = new User("lucy","chairlady");
         userDao.add(testUser);
 

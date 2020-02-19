@@ -20,8 +20,8 @@ public class Sql2oNewsDaoTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        String connectionString = "jdbc:postgresql://localhost:5432/jadle_test"; //
-        Sql2o sql2o = new Sql2o(connectionString, "v", "1234"); //changed user and pass to null for mac users...Linux & windows need strings
+        String connectionString = "jdbc:postgresql://localhost:5432/news_test"; //
+        Sql2o sql2o = new Sql2o(connectionString, "josephgakunga", "123"); //changed user and pass to null for mac users...Linux & windows need strings
         departmentDao = new Sql2oDepartmentDao(sql2o);
         userDao = new Sql2oUserDao(sql2o);
         newsDao = new Sql2oNewsDao(sql2o);
@@ -125,7 +125,7 @@ public class Sql2oNewsDaoTest {
         newsDao.add(testFourthNews);
 
         assertEquals(4, newsDao.getAllNewsByDepartment(testDepartment.getId()).size()); //it is important we verify that the list is the same size.
-        assertEquals("I prefer home cooking", newsDao.getAllNewsByDepartmentSortedNewestToOldest(testDepartment.getId()).get(0).getContent());
+
     }
 
     //helpers
