@@ -1,13 +1,13 @@
 package models;
 
-public class User extends Department{
+import java.util.Objects;
+
+public class User {
     private int id;
     private String name;
     private String positionInCompany;
-    private int departmentId;
 
-    public User(String name, String positionInCompany, String departmentName, int numberOfEmployees) {
-        super(departmentName,numberOfEmployees);
+    public User(String name, String positionInCompany) {
         this.name = name;
         this.positionInCompany = positionInCompany;
     }
@@ -36,12 +36,18 @@ public class User extends Department{
         this.positionInCompany = positionInCompany;
     }
 
-    public int getDepartmentId() {
-        return departmentId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(positionInCompany, user.positionInCompany);
     }
 
-    public void setDepartmentId(int departmentId) {
-        this.departmentId = departmentId;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, positionInCompany);
     }
-
 }

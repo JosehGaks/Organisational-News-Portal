@@ -1,6 +1,8 @@
 package models;
 
-public abstract class Department {
+import java.util.Objects;
+
+public class Department {
     private String departmentName;
     private int numberOfEmployees;
     private int id;
@@ -32,5 +34,20 @@ public abstract class Department {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Department that = (Department) o;
+        return numberOfEmployees == that.numberOfEmployees &&
+                id == that.id &&
+                Objects.equals(departmentName, that.departmentName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(departmentName, numberOfEmployees, id);
     }
 }
