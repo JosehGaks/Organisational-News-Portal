@@ -43,7 +43,6 @@ public class App {
 
 
             if (department != null && user != null){
-                //both exist and can be associated
                 userDao.addUserToDepartment(user, department);
                 res.status(201);
                 return gson.toJson(String.format("Department '%s' and User '%s' have been associated",user.getName(), department.getDepartmentName()));
