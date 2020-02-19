@@ -13,9 +13,6 @@ public interface NewsDao {
     List<News> getAllNewsByDepartment(int departmentId);
     List<News> getAllNewsByDepartmentSortedNewestToOldest(int departmentId);
 
-    //update
-    //omit for now
-
     //delete
     void deleteById(int id);
     void clearAll();

@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 public class Sql2oNewsDaoTest {
-    private static Connection conn; //these variables are now static.
+    private static Connection conn;
     private static Sql2oDepartmentDao departmentDao; //these variables are now static.
     private static Sql2oUserDao userDao; //these variables are now static.
     private static Sql2oNewsDao newsDao; //these variables are now static.

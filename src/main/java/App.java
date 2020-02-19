@@ -25,7 +25,7 @@ public class App {
         Gson gson = new Gson();
 
         staticFileLocation("/public");
-        String connectionString = "jdbc:postgresql://localhost:5432/jadle";   //connect to jadle, not jadle_test! try not to copy paste
+        String connectionString = "jdbc:postgresql://localhost:5432/news";
         Sql2o sql2o = new Sql2o(connectionString, "v", "1234");
 
         departmentDao = new Sql2oDepartmentDao(sql2o);
@@ -46,7 +46,7 @@ public class App {
                 //both exist and can be associated
                 userDao.addUserToDepartment(user, department);
                 res.status(201);
-                return gson.toJson(String.format("Department '%s' and User '%s' have been associated",user.getName(), department.getName()));
+                return gson.toJson(String.format("Department '%s' and User '%s' have been associated",user.getName(), department.getDepartmentName()));
             }
             else {
                 throw new ApiException(404, String.format("Department or User does not exist"));
@@ -131,20 +131,20 @@ public class App {
                 throw new ApiException(404, String.format("No department with the id: \"%s\" exists", req.params("id")));
             }
 
-            allNewss = newsDao.getAllNewssByDepartment(departmentId);
+            allNewss = newsDao.getAllNewsByDepartment(departmentId);
 
             return gson.toJson(allNewss);
         });
 
-        get("/departments/:id/sortedNewss", "application/json", (req, res) -> { //// TODO: 1/18/18 generalize this route so that it can be used to return either sorted newss or unsorted ones.
+        get("/departments/:id/sortedNews", "application/json", (req, res) -> { //// TODO: 1/18/18 generalize this route so that it can be used to return either sorted newss or unsorted ones.
             int departmentId = Integer.parseInt(req.params("id"));
             Department departmentToFind = departmentDao.findById(departmentId);
-            List<News> allNewss;
+            List<News> allNews;
             if (departmentToFind == null){
                 throw new ApiException(404, String.format("No department with the id: \"%s\" exists", req.params("id")));
             }
-            allNewss = newsDao.getAllNewssByDepartmentSortedNewestToOldest(departmentId);
-            return gson.toJson(allNewss);
+            allNews = newsDao.getAllNewsByDepartmentSortedNewestToOldest(departmentId);
+            return gson.toJson(allNews);
         });
 
         get("/users", "application/json", (req, res) -> {
