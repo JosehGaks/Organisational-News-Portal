@@ -133,8 +133,6 @@ public class Sql2oDepartmentDaoTest {
     }
 
 
-    //helpers
-
     public Department setupDepartment (){
         Department department = new Department("tech", 2);
         departmentDao.add(department);
