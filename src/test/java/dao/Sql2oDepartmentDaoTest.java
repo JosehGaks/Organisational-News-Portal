@@ -35,7 +35,7 @@ public class Sql2oDepartmentDaoTest {
         System.out.println("clearing database");
         departmentDao.clearAll(); //clear all departments after every test
         userDao.clearAll(); //clear all departments after every test
-        newsDao.clearAll(); //clear all departments after every test
+        newsDao.clearAll();
     }
 
     @AfterClass     //changed to @AfterClass (run once after all tests in this file completed)
