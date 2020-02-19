@@ -20,7 +20,7 @@ public class Sql2oDepartmentDaoTest {
     private static Sql2oUserDao userDao; //these variables are now static.
     private static Sql2oNewsDao newsDao; //these variables are now static.
 
-    @BeforeClass                //changed to @BeforeClass (run once before running any tests in this file)
+    @BeforeClass                //
     public static void setUp() throws Exception {
         String connectionString = "jdbc:postgresql://localhost:5432/news_test";  //connect to postgres test database
         Sql2o sql2o = new Sql2o(connectionString, "", "123"); //changed user and pass to null
