@@ -151,7 +151,7 @@ public class App {
         });
 
 
-        //CREATE
+
         post("/departments/new", "application/json", (req, res) -> {
             Department department = gson.fromJson(req.body(), Department.class);
             departmentDao.add(department);
