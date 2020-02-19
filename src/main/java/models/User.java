@@ -45,7 +45,6 @@ public class User {
                 Objects.equals(name, user.name) &&
                 Objects.equals(positionInCompany, user.positionInCompany);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(id, name, positionInCompany);
