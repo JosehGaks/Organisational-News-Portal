@@ -14,9 +14,9 @@ import static org.junit.Assert.assertNotEquals;
 
 public class Sql2oNewsDaoTest {
     private static Connection conn;
-    private static Sql2oDepartmentDao departmentDao; //these variables are now static.
-    private static Sql2oUserDao userDao; //these variables are now static.
-    private static Sql2oNewsDao newsDao; //these variables are now static.
+    private static Sql2oDepartmentDao departmentDao;
+    private static Sql2oUserDao userDao;
+    private static Sql2oNewsDao newsDao;
 
     @BeforeClass
     public static void setUp() throws Exception {
